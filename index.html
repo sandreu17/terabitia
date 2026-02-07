@@ -208,22 +208,28 @@
             <p>Recibe recursos, tips y novedades sobre crianza consciente y juego libre directamente en tu correo.</p>
             
             <form id="newsletter-form" class="newsletter-form">
-                <input 
-                    type="text" 
-                    id="nombre" 
-                    name="nombre" 
-                    placeholder="Tu nombre" 
-                    required
-                    class="newsletter-input"
-                >
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    placeholder="Tu correo electrónico" 
-                    required
-                    class="newsletter-input"
-                >
+                <div>
+                    <input 
+                        type="text" 
+                        id="nombre" 
+                        name="nombre" 
+                        placeholder="Tu nombre" 
+                        required
+                        class="newsletter-input"
+                    >
+                    <p class="error-text" id="nombre-error">Por favor ingresa tu nombre</p>
+                </div>
+                <div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Tu correo electrónico" 
+                        required
+                        class="newsletter-input"
+                    >
+                    <p class="error-text" id="email-error">Por favor ingresa un correo válido</p>
+                </div>
                 <button type="submit" class="btn btn-newsletter">Suscribirme</button>
             </form>
             
