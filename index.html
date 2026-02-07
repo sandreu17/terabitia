@@ -6,6 +6,7 @@
     <title>Terabitia - Vivir para jugar, jugar para vivir</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -200,6 +201,36 @@
         <a href="https://wa.me/573228824111" class="btn btn-whatsapp" target="_blank">Escríbenos por WhatsApp</a>
     </section>
 
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>📬 Suscríbete a nuestro Newsletter</h2>
+            <p>Recibe recursos, tips y novedades sobre crianza consciente y juego libre directamente en tu correo.</p>
+            
+            <form id="newsletter-form" class="newsletter-form">
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    placeholder="Tu nombre" 
+                    required
+                    class="newsletter-input"
+                >
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Tu correo electrónico" 
+                    required
+                    class="newsletter-input"
+                >
+                <button type="submit" class="btn btn-newsletter">Suscribirme</button>
+            </form>
+            
+            <p id="newsletter-message" class="newsletter-message"></p>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer id="contacto" class="footer">
         <div class="footer-content">
@@ -231,5 +262,16 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
 </body>
 </html>
