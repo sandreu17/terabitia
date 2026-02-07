@@ -262,30 +262,40 @@ if (newsletterForm) {
         submitBtn.textContent = 'Enviando...';
         
         try {
-            // URL de Google Apps Script configurada
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyHiIh64oA8xJp7Nwk-8q0rFEbHy8vvVjY1WP4_UEQfrX4ymj1DNnQaQCoRAVbDWqmFbg/exec';
+            // SheetDB - API configurada
+            const sheetDBURL = 'https://sheetdb.io/api/v1/ex6fuolvqkzpx';
             
-            console.log('🚀 Enviando a:', scriptURL);
+            console.log('🚀 Enviando a SheetDB');
             console.log('📝 Datos:', { nombre, email });
             
-            // Crear URL con parámetros
-            const url = `${scriptURL}?nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}&fecha=${encodeURIComponent(new Date().toLocaleString('es-CO'))}`;
-            
-            // Enviar con fetch
-            await fetch(url, {
-                method: 'GET',
-                mode: 'no-cors'
+            const response = await fetch(sheetDBURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: [{
+                        Nombre: nombre,
+                        Email: email,
+                        Fecha: new Date().toLocaleString('es-CO')
+                    }]
+                })
             });
             
-            console.log('✅ Enviado correctamente');
+            const result = await response.json();
+            console.log('📥 Respuesta:', result);
             
-            // Mostrar mensaje de éxito
-            newsletterMessage.textContent = '¡Gracias por suscribirte, ' + nombre + '! 🎉 Pronto recibirás noticias nuestras.';
-            newsletterMessage.className = 'newsletter-message success';
-            newsletterForm.reset();
+            if (response.ok && result.created === 1) {
+                console.log('✅ Guardado en Google Sheet');
+                newsletterMessage.textContent = '¡Gracias por suscribirte, ' + nombre + '! 🎉 Pronto recibirás noticias nuestras.';
+                newsletterMessage.className = 'newsletter-message success';
+                newsletterForm.reset();
+            } else {
+                throw new Error('Error al guardar');
+            }
             
         } catch (error) {
-            console.error('❌ Error al enviar:', error);
+            console.error('❌ Error:', error);
             newsletterMessage.textContent = '❌ Hubo un error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.';
             newsletterMessage.className = 'newsletter-message error';
         } finally {
