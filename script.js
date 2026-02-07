@@ -187,51 +187,124 @@ console.log('🎨 Terabitia - Página cargada con éxito!');
 // Newsletter Form Handler
 const newsletterForm = document.getElementById('newsletter-form');
 const newsletterMessage = document.getElementById('newsletter-message');
+const nombreInput = document.getElementById('nombre');
+const emailInput = document.getElementById('email');
+const nombreError = document.getElementById('nombre-error');
+const emailError = document.getElementById('email-error');
+
+// Función para validar email
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Limpiar errores al escribir
+if (nombreInput) {
+    nombreInput.addEventListener('input', () => {
+        nombreInput.classList.remove('error');
+        nombreError.classList.remove('show');
+    });
+}
+
+if (emailInput) {
+    emailInput.addEventListener('input', () => {
+        emailInput.classList.remove('error');
+        emailError.classList.remove('show');
+    });
+}
 
 if (newsletterForm) {
     newsletterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Limpiar mensajes previos
+        newsletterMessage.style.display = 'none';
+        nombreError.classList.remove('show');
+        emailError.classList.remove('show');
+        nombreInput.classList.remove('error');
+        emailInput.classList.remove('error');
+        
         const submitBtn = newsletterForm.querySelector('button[type="submit"]');
-        const nombre = document.getElementById('nombre').value;
-        const email = document.getElementById('email').value;
+        const nombre = nombreInput.value.trim();
+        const email = emailInput.value.trim();
+        
+        // Validaciones
+        let hasError = false;
+        
+        if (!nombre || nombre.length < 2) {
+            nombreInput.classList.add('error');
+            nombreError.textContent = 'Por favor ingresa tu nombre completo';
+            nombreError.classList.add('show');
+            hasError = true;
+        }
+        
+        if (!email) {
+            emailInput.classList.add('error');
+            emailError.textContent = 'Por favor ingresa tu correo';
+            emailError.classList.add('show');
+            hasError = true;
+        } else if (!isValidEmail(email)) {
+            emailInput.classList.add('error');
+            emailError.textContent = 'Por favor ingresa un correo válido (ejemplo@correo.com)';
+            emailError.classList.add('show');
+            hasError = true;
+        }
+        
+        if (hasError) {
+            return;
+        }
         
         // Deshabilitar botón mientras se envía
         submitBtn.disabled = true;
         submitBtn.textContent = 'Enviando...';
         
         try {
-            // AQUÍ PONDRÁS TU URL DE GOOGLE APPS SCRIPT
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyHiIh64oA8xJp7Nwk-8q0rFEbHy8vvVjY1WP4_UEQfrX4ymj1DNnQaQCoRAVbDWqmFbg/exec';
+            // URL de Google Apps Script - DEBES CONFIGURARLA
+            const scriptURL = 'TU_URL_AQUI';
+            
+            // Si no has configurado la URL, mostrar mensaje
+            if (scriptURL === 'TU_URL_AQUI') {
+                newsletterMessage.textContent = '⚠️ El formulario aún no está configurado. Por favor sigue las instrucciones en CONFIGURAR-NEWSLETTER.md';
+                newsletterMessage.className = 'newsletter-message error';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Suscribirme';
+                return;
+            }
             
             const formData = new FormData();
             formData.append('nombre', nombre);
             formData.append('email', email);
-            formData.append('fecha', new Date().toLocaleString('es-CO'));
+            formData.append('fecha', new Date().toLocaleString('es-CO', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            }));
             
             const response = await fetch(scriptURL, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                mode: 'no-cors' // Importante para Google Apps Script
             });
             
-            if (response.ok) {
-                newsletterMessage.textContent = '¡Gracias por suscribirte! 🎉 Pronto recibirás noticias nuestras.';
-                newsletterMessage.className = 'newsletter-message success';
-                newsletterForm.reset();
-            } else {
-                throw new Error('Error en la respuesta');
-            }
+            // Con mode: 'no-cors', siempre llegará aquí
+            newsletterMessage.textContent = '¡Gracias por suscribirte, ' + nombre + '! 🎉 Pronto recibirás noticias nuestras.';
+            newsletterMessage.className = 'newsletter-message success';
+            newsletterForm.reset();
+            
         } catch (error) {
-            newsletterMessage.textContent = 'Hubo un error. Por favor intenta de nuevo.';
+            console.error('Error:', error);
+            newsletterMessage.textContent = '❌ Hubo un error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.';
             newsletterMessage.className = 'newsletter-message error';
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Suscribirme';
             
-            // Ocultar mensaje después de 5 segundos
+            // Ocultar mensaje después de 8 segundos
             setTimeout(() => {
                 newsletterMessage.style.display = 'none';
-            }, 5000);
+            }, 8000);
         }
     });
 }
