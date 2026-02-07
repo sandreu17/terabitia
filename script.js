@@ -259,12 +259,12 @@ if (newsletterForm) {
         submitBtn.textContent = 'Enviando...';
         
         try {
-            // URL de Google Apps Script - DEBES CONFIGURARLA
-            const scriptURL = 'TU_URL_AQUI';
+            // URL de Google Apps Script configurada
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyHiIh64oA8xJp7Nwk-8q0rFEbHy8vvVjY1WP4_UEQfrX4ymj1DNnQaQCoRAVbDWqmFbg/exec';
             
             // Si no has configurado la URL, mostrar mensaje
-            if (scriptURL === 'TU_URL_AQUI') {
-                newsletterMessage.textContent = '⚠️ El formulario aún no está configurado. Por favor sigue las instrucciones en CONFIGURAR-NEWSLETTER.md';
+            if (scriptURL.includes('TU_URL_AQUI') || scriptURL.includes('...')) {
+                newsletterMessage.textContent = '⚠️ Configura la URL de Google Apps Script en script.js (línea 267)';
                 newsletterMessage.className = 'newsletter-message error';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Suscribirme';
