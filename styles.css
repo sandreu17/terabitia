@@ -42,7 +42,7 @@ body {
 }
 
 .logo-img {
-    height: 40px;
+    height: 60px;
     transition: transform 0.3s ease;
 }
 
@@ -384,6 +384,8 @@ body {
     border-radius: var(--border-radius);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .service-card:hover {
@@ -393,7 +395,7 @@ body {
 
 .service-img {
     width: 100%;
-    height: 250px;
+    height: 300px;
     object-fit: cover;
 }
 
@@ -549,6 +551,46 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.services-info.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease;
+}
+
+.services-list li {
+    padding: 0.5rem 0;
+    color: var(--text-gray);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+}
+
+.services-info.animate-in .services-list li:nth-child(1) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.2s;
+}
+
+.services-info.animate-in .services-list li:nth-child(2) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.4s;
+}
+
+.services-info.animate-in .services-list li:nth-child(3) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.6s;
+}
+
+.services-info.animate-in .services-list li:nth-child(4) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.8s;
 }
 
 .services-info h3 {
@@ -558,11 +600,6 @@ body {
 
 .services-list {
     list-style: none;
-}
-
-.services-list li {
-    padding: 0.5rem 0;
-    color: var(--text-gray);
 }
 
 /* CTA Section */
