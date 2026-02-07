@@ -184,6 +184,39 @@ window.addEventListener('load', () => {
 
 console.log('🎨 Terabitia - Página cargada con éxito!');
 
+// Load recent blogs dynamically
+async function loadRecentBlogs() {
+    try {
+        const response = await fetch('blog/blogs.json');
+        const blogs = await response.json();
+        
+        // Sort by date (most recent first)
+        blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Get last 3 blogs
+        const recentBlogs = blogs.slice(0, 3);
+        
+        // Update blog grid
+        const blogGrid = document.querySelector('.blog-grid');
+        if (blogGrid && recentBlogs.length > 0) {
+            blogGrid.innerHTML = recentBlogs.map(blog => `
+                <article class="blog-card">
+                    <h3>${blog.title}</h3>
+                    <p>${blog.description}</p>
+                    <a href="${blog.url}" class="blog-link">Leer más →</a>
+                </article>
+            `).join('');
+        }
+    } catch (error) {
+        console.log('No se pudieron cargar los blogs:', error);
+    }
+}
+
+// Load blogs when page loads
+if (document.querySelector('.blog-grid')) {
+    loadRecentBlogs();
+}
+
 // Newsletter Form Handler
 const newsletterForm = document.getElementById('newsletter-form');
 const newsletterMessage = document.getElementById('newsletter-message');
