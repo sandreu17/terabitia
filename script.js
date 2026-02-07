@@ -29,17 +29,15 @@ window.addEventListener('scroll', () => {
     }
     
     if (currentScroll > lastScroll && currentScroll > 100) {
-        // Scroll down - hide header
         header.style.transform = 'translateY(-100%)';
     } else {
-        // Scroll up - show header
         header.style.transform = 'translateY(0)';
     }
     
     lastScroll = currentScroll;
 });
 
-// Intersection Observer para animaciones al hacer scroll
+// Intersection Observer para animaciones al hacer scroll (EXCLUYENDO pillar-cards)
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -54,8 +52,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Aplicar animación a las tarjetas
-const animateElements = document.querySelectorAll('.service-card, .blog-card, .testimonio-card, .pillar-card, .card');
+// Aplicar animación SOLO a service-card, blog-card y card (NO a pillar-card)
+const animateElements = document.querySelectorAll('.service-card, .blog-card, .card');
 animateElements.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
@@ -63,20 +61,50 @@ animateElements.forEach(el => {
     observer.observe(el);
 });
 
-// Animación de números contadores (si quieres agregar estadísticas)
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
+// FLIP CARDS de pilares - Esta es la animación principal
+const pillarCards = document.querySelectorAll('.pillar-card');
+pillarCards.forEach(card => {
+    // Hacer las cards visibles inmediatamente
+    card.style.opacity = '1';
     
-    const timer = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-            element.textContent = Math.round(target);
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.round(start);
+    // Agregar evento de click para voltear
+    card.addEventListener('click', function() {
+        this.classList.toggle('flipped');
+    });
+});
+
+// Animación de testimonios al hacer scroll
+const testimonioObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add('animate-in');
+            }, index * 200);
         }
-    }, 16);
+    });
+}, {
+    threshold: 0.2
+});
+
+const testimonioCards = document.querySelectorAll('.testimonio-card');
+testimonioCards.forEach(card => {
+    testimonioObserver.observe(card);
+});
+
+// Animación de la sección "¿Qué incluyen nuestros servicios?"
+const servicesInfoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, {
+    threshold: 0.3
+});
+
+const servicesInfo = document.querySelector('.services-info');
+if (servicesInfo) {
+    servicesInfoObserver.observe(servicesInfo);
 }
 
 // Efecto parallax suave en el hero
@@ -107,7 +135,7 @@ serviceCards.forEach(card => {
     });
 });
 
-// Resaltar el enlace activo del menú según la sección visible
+// Resaltar el enlace activo del menú
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
@@ -116,7 +144,6 @@ window.addEventListener('scroll', () => {
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
         if (pageYOffset >= (sectionTop - 150)) {
             current = section.getAttribute('id');
         }
@@ -153,119 +180,6 @@ window.addEventListener('load', () => {
     if (heroImage) {
         heroImage.style.animation = 'fadeInRight 1s ease forwards';
     }
-});
-
-// Efecto de escritura para el título (opcional)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Lazy loading para imágenes
-const images = document.querySelectorAll('img[data-src]');
-const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-            imageObserver.unobserve(img);
-        }
-    });
-});
-
-images.forEach(img => imageObserver.observe(img));
-
-// Agregar efecto de partículas en el fondo (opcional)
-function createParticle() {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    particle.style.cssText = `
-        position: fixed;
-        width: 5px;
-        height: 5px;
-        background: rgba(232, 93, 74, 0.3);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: -1;
-        left: ${Math.random() * 100}vw;
-        top: ${Math.random() * 100}vh;
-        animation: particleFloat ${5 + Math.random() * 10}s linear infinite;
-    `;
-    document.body.appendChild(particle);
-    
-    setTimeout(() => particle.remove(), 15000);
-}
-
-// Crear partículas cada cierto tiempo
-setInterval(createParticle, 3000);
-
-// Agregar animación de partículas al CSS
-const particleStyle = document.createElement('style');
-particleStyle.textContent = `
-    @keyframes particleFloat {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-        }
-        90% {
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(particleStyle);
-
-// Efecto de cursor personalizado (opcional)
-const cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-cursor.style.cssText = `
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.2s ease;
-    display: none;
-`;
-document.body.appendChild(cursor);
-
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX - 10 + 'px';
-    cursor.style.top = e.clientY - 10 + 'px';
-    cursor.style.display = 'block';
-});
-
-// Agregar efecto al hacer hover en elementos interactivos
-const interactiveElements = document.querySelectorAll('a, button, .btn');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'scale(1.5)';
-        cursor.style.background = 'rgba(232, 93, 74, 0.2)';
-    });
-    
-    el.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'scale(1)';
-        cursor.style.background = 'transparent';
-    });
 });
 
 console.log('🎨 Terabitia - Página cargada con éxito!');
