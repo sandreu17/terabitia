@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://terabitia.netlify.app/</loc>
+    <loc>https://terabitia.lat/</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://terabitia.netlify.app/index.html#nosotros</loc>
+    <loc>https://terabitia.lat/index.html#nosotros</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://terabitia.netlify.app/index.html#servicios</loc>
+    <loc>https://terabitia.lat/index.html#servicios</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://terabitia.netlify.app/index.html#blog</loc>
+    <loc>https://terabitia.lat/index.html#blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://terabitia.netlify.app/blog-1.html</loc>
+    <loc>https://terabitia.lat/blog-1.html</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
