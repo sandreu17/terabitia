@@ -186,9 +186,18 @@ console.log('🎨 Terabitia - Página cargada con éxito!');
 
 // Load recent blogs dynamically
 async function loadRecentBlogs() {
+    const blogGrid = document.querySelector('.blog-grid');
+    
     try {
-        const response = await fetch('blog/blogs.json');
+        console.log('📚 Intentando cargar blogs...');
+        const response = await fetch('blogs.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const blogs = await response.json();
+        console.log('✅ Blogs cargados:', blogs);
         
         // Sort by date (most recent first)
         blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -197,7 +206,6 @@ async function loadRecentBlogs() {
         const recentBlogs = blogs.slice(0, 3);
         
         // Update blog grid
-        const blogGrid = document.querySelector('.blog-grid');
         if (blogGrid && recentBlogs.length > 0) {
             blogGrid.innerHTML = recentBlogs.map(blog => `
                 <article class="blog-card">
@@ -206,9 +214,26 @@ async function loadRecentBlogs() {
                     <a href="${blog.url}" class="blog-link">Leer más →</a>
                 </article>
             `).join('');
+        } else if (blogGrid) {
+            blogGrid.innerHTML = `
+                <article class="blog-card">
+                    <h3>Próximamente</h3>
+                    <p>Estamos preparando contenido increíble para ti. ¡Vuelve pronto!</p>
+                </article>
+            `;
         }
     } catch (error) {
-        console.log('No se pudieron cargar los blogs:', error);
+        console.error('❌ Error cargando blogs:', error);
+        // Show fallback content if fetch fails
+        if (blogGrid) {
+            blogGrid.innerHTML = `
+                <article class="blog-card">
+                    <h3>El juego libre y el aprendizaje en la primera infancia</h3>
+                    <p>Descubre cómo el juego libre y no estructurado potencia el desarrollo cognitivo, emocional y social de los niños.</p>
+                    <a href="juego-libre-aprendizaje-primera-infancia.html" class="blog-link">Leer más →</a>
+                </article>
+            `;
+        }
     }
 }
 
