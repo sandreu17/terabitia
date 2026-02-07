@@ -102,12 +102,13 @@ body {
 /* Hero Section */
 .hero {
     background: var(--bg-cream);
-    padding: 120px 2rem 60px;
+    padding: 120px 4rem 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     min-height: 90vh;
     position: relative;
 }
@@ -219,9 +220,10 @@ body {
 
 /* Nosotros Section */
 .nosotros {
-    padding: 80px 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 80px 4rem;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     background: var(--bg-light);
 }
 
@@ -253,6 +255,9 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
     margin-bottom: 4rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pillar-card {
@@ -260,13 +265,52 @@ body {
     padding: 2rem;
     border-radius: var(--border-radius);
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.6s ease;
     cursor: pointer;
+    position: relative;
+    height: 250px;
+    transform-style: preserve-3d;
+}
+
+.pillar-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.pillar-front,
+.pillar-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.pillar-front {
+    background: white;
+    z-index: 2;
+}
+
+.pillar-back {
+    background: white;
+    transform: rotateY(180deg);
+    padding: 0;
+}
+
+.pillar-back-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
 }
 
 .pillar-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .pillar-icon {
@@ -309,9 +353,10 @@ body {
 
 /* Servicios Section */
 .servicios {
-    padding: 80px 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 80px 4rem;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     background: var(--bg-cream);
 }
 
@@ -319,13 +364,19 @@ body {
     color: var(--primary-color);
     font-size: 1.8rem;
     margin: 2rem 0 1.5rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
     margin-bottom: 3rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .service-card {
@@ -375,9 +426,10 @@ body {
 
 /* Blog Section */
 .blog {
-    padding: 80px 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 80px 4rem;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     background: var(--bg-light);
 }
 
@@ -385,6 +437,9 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .blog-card {
@@ -418,35 +473,56 @@ body {
 
 /* Testimonios Section */
 .testimonios {
-    padding: 80px 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 80px 4rem;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     background: var(--bg-cream);
 }
 
 .testimonios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .testimonio-card {
     background: white;
     padding: 2rem;
     border-radius: var(--border-radius);
-    transition: transform 0.3s ease;
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+}
+
+.testimonio-card.animate-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 .testimonio-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
 }
 
 .stars {
     color: #FFD700;
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    animation: starPulse 2s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .testimonio-text {
@@ -470,6 +546,9 @@ body {
     padding: 2rem;
     border-radius: var(--border-radius);
     border-left: 5px solid var(--secondary-color);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .services-info h3 {
@@ -489,8 +568,11 @@ body {
 /* CTA Section */
 .cta {
     background: var(--bg-light);
-    padding: 80px 2rem;
+    padding: 80px 4rem;
     text-align: center;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 .cta h2 {
@@ -538,7 +620,52 @@ body {
 
 .footer-logo-img {
     height: 50px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Redes Sociales */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon.facebook {
+    background: #1877F2;
+    color: white;
+}
+
+.social-icon.facebook:hover {
+    background: #145dbf;
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(24, 119, 242, 0.4);
+}
+
+.social-icon.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+}
+
+.social-icon.instagram:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(225, 48, 108, 0.4);
+}
+
+.social-icon svg {
+    width: 24px;
+    height: 24px;
 }
 
 .footer-text {
