@@ -217,6 +217,8 @@ if (newsletterForm) {
     newsletterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        console.log('📬 Formulario enviado');
+        
         // Limpiar mensajes previos
         newsletterMessage.style.display = 'none';
         nombreError.classList.remove('show');
@@ -251,6 +253,7 @@ if (newsletterForm) {
         }
         
         if (hasError) {
+            console.log('❌ Errores de validación');
             return;
         }
         
@@ -262,39 +265,27 @@ if (newsletterForm) {
             // URL de Google Apps Script configurada
             const scriptURL = 'https://script.google.com/macros/s/AKfycbyHiIh64oA8xJp7Nwk-8q0rFEbHy8vvVjY1WP4_UEQfrX4ymj1DNnQaQCoRAVbDWqmFbg/exec';
             
-            // Si no has configurado la URL, mostrar mensaje
-            if (scriptURL.includes('TU_URL_AQUI') || scriptURL.includes('...')) {
-                newsletterMessage.textContent = '⚠️ Configura la URL de Google Apps Script en script.js (línea 267)';
-                newsletterMessage.className = 'newsletter-message error';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Suscribirme';
-                return;
-            }
+            console.log('🚀 Enviando a:', scriptURL);
+            console.log('📝 Datos:', { nombre, email });
             
-            const formData = new FormData();
-            formData.append('nombre', nombre);
-            formData.append('email', email);
-            formData.append('fecha', new Date().toLocaleString('es-CO', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            }));
+            // Crear URL con parámetros
+            const url = `${scriptURL}?nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}&fecha=${encodeURIComponent(new Date().toLocaleString('es-CO'))}`;
             
-            const response = await fetch(scriptURL, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors' // Importante para Google Apps Script
+            // Enviar con fetch
+            await fetch(url, {
+                method: 'GET',
+                mode: 'no-cors'
             });
             
-            // Con mode: 'no-cors', siempre llegará aquí
+            console.log('✅ Enviado correctamente');
+            
+            // Mostrar mensaje de éxito
             newsletterMessage.textContent = '¡Gracias por suscribirte, ' + nombre + '! 🎉 Pronto recibirás noticias nuestras.';
             newsletterMessage.className = 'newsletter-message success';
             newsletterForm.reset();
             
         } catch (error) {
-            console.error('Error:', error);
+            console.error('❌ Error al enviar:', error);
             newsletterMessage.textContent = '❌ Hubo un error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.';
             newsletterMessage.className = 'newsletter-message error';
         } finally {
