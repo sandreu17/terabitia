@@ -289,6 +289,7 @@ if (newsletterForm) {
                 console.log('✅ Guardado en Google Sheet');
                 newsletterMessage.textContent = '¡Gracias por suscribirte, ' + nombre + '! 🎉 Pronto recibirás noticias nuestras.';
                 newsletterMessage.className = 'newsletter-message success';
+                newsletterMessage.style.display = 'block';
                 newsletterForm.reset();
             } else {
                 throw new Error('Error al guardar');
@@ -298,6 +299,7 @@ if (newsletterForm) {
             console.error('❌ Error:', error);
             newsletterMessage.textContent = '❌ Hubo un error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.';
             newsletterMessage.className = 'newsletter-message error';
+            newsletterMessage.style.display = 'block';
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Suscribirme';
