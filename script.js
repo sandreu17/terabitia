@@ -183,3 +183,55 @@ window.addEventListener('load', () => {
 });
 
 console.log('🎨 Terabitia - Página cargada con éxito!');
+
+// Newsletter Form Handler
+const newsletterForm = document.getElementById('newsletter-form');
+const newsletterMessage = document.getElementById('newsletter-message');
+
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+        const nombre = document.getElementById('nombre').value;
+        const email = document.getElementById('email').value;
+        
+        // Deshabilitar botón mientras se envía
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        
+        try {
+            // AQUÍ PONDRÁS TU URL DE GOOGLE APPS SCRIPT
+            const scriptURL = 'TU_URL_AQUI';
+            
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('email', email);
+            formData.append('fecha', new Date().toLocaleString('es-CO'));
+            
+            const response = await fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                newsletterMessage.textContent = '¡Gracias por suscribirte! 🎉 Pronto recibirás noticias nuestras.';
+                newsletterMessage.className = 'newsletter-message success';
+                newsletterForm.reset();
+            } else {
+                throw new Error('Error en la respuesta');
+            }
+        } catch (error) {
+            newsletterMessage.textContent = 'Hubo un error. Por favor intenta de nuevo.';
+            newsletterMessage.className = 'newsletter-message error';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Suscribirme';
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                newsletterMessage.style.display = 'none';
+            }, 5000);
+        }
+    });
+}
