@@ -202,7 +202,7 @@ if (newsletterForm) {
         
         try {
             // AQUÍ PONDRÁS TU URL DE GOOGLE APPS SCRIPT
-            const scriptURL = 'TU_URL_AQUI';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyHiIh64oA8xJp7Nwk-8q0rFEbHy8vvVjY1WP4_UEQfrX4ymj1DNnQaQCoRAVbDWqmFbg/exec';
             
             const formData = new FormData();
             formData.append('nombre', nombre);
